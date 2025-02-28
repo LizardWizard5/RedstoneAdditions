@@ -75,7 +75,7 @@ public class RedstoneClock extends Block {
     }
     @Override
     public int getSignal(BlockState state, BlockGetter world, BlockPos pos, Direction direction) {
-        // Only emit full power (15) if the request comes from the block in front (North)
+        // Only emit full power (15) if the request comes from the block in front
         Direction facing = state.getValue(FACING);
         return direction == facing && state.getValue(POWERED) ? 15 : 0;
     }

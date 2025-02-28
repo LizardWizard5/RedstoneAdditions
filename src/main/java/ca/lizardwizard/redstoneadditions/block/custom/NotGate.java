@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -31,6 +32,13 @@ public class NotGate extends Block {
         builder.add(POWERED);
         builder.add(DELAY);
         builder.add(FACING);
+    }
+
+    @Override
+    public int getSignal(BlockState state, BlockGetter world, BlockPos pos, Direction direction) {
+        // Only emit full power (15) if the request comes from the block in front
+        Direction facing = state.getValue(FACING).getOpposite();// Get the opposite direction of the block's facing, we want to intake redstone from the back
+        return direction.getOpposite() == facing && state.getValue(POWERED) ? 15 : 0;
     }
 
     @Override
