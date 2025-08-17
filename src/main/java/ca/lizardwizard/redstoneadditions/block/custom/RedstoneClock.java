@@ -2,6 +2,7 @@ package ca.lizardwizard.redstoneadditions.block.custom;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -58,6 +59,10 @@ public class RedstoneClock extends Block {
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         return SHAPE;
+    }
+
+    public boolean isSignalSource(BlockState p_52572_) {
+        return true;
     }
 
     @Override
@@ -126,6 +131,10 @@ public class RedstoneClock extends Block {
         return InteractionResult.SUCCESS;
     }
 
+
+
+
+
     @Override
     public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         // Get the updated block state from the world
@@ -136,6 +145,8 @@ public class RedstoneClock extends Block {
         // Toggle the power state while preserving the delay
         level.setBlock(pos, currentState.setValue(POWERED, !isPowered), 3);
         level.updateNeighborsAt(pos, this);
+
+
 
 
         // Schedule the next tick using the updated delay

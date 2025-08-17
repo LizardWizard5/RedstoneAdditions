@@ -1,6 +1,7 @@
 package ca.lizardwizard.redstoneadditions.block;
 
 import ca.lizardwizard.redstoneadditions.Redstoneadditions;
+import ca.lizardwizard.redstoneadditions.block.custom.NotGate;
 import ca.lizardwizard.redstoneadditions.block.custom.RedstoneClock;
 import ca.lizardwizard.redstoneadditions.item.ModItems;
 import net.minecraft.world.item.BlockItem;
@@ -23,7 +24,9 @@ public class ModBlocks {
             DeferredRegister.create(ForgeRegistries.BLOCKS, Redstoneadditions.MODID);
 
     public static final RegistryObject<Block> REDSTONE_CLOCK = registerBlock("redstone-clock",
-            () -> new RedstoneClock(BlockBehaviour.Properties.of().strength(2f).requiresCorrectToolForDrops()));
+            () -> new RedstoneClock(BlockBehaviour.Properties.of().strength(2f)));
+    public static final  RegistryObject<Block> REDSTONE_NOT_GATE = registerBlock("redstone-not-gate",
+            () -> new NotGate(BlockBehaviour.Properties.of().strength(2f)));
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
@@ -32,6 +35,7 @@ public class ModBlocks {
     }
 
     private static <T extends Block> void registerBlockItem(String name, RegistryObject<T> block) {
+
         ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
     }
 

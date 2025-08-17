@@ -2,10 +2,10 @@
 	"credit": "Made with Blockbench",
 	"textures": {
 		"0": "redstoneadditions:block/not-gate",
-		"1": "MCAssets121:block/copper_block",
-		"4": "MCAssets121:block/repeater_on",
-		"5": "MCAssets121:block/smooth_stone",
-		"6": "MCAssets121:block/redstone_torch_off",
+		"1": "block/copper_block",
+		"4": "block/repeater_on",
+		"5": "block/smooth_stone",
+		"6": "block/redstone_torch_off",
 		"particle": "redstoneadditions:block/not-gate"
 	},
 	"elements": [

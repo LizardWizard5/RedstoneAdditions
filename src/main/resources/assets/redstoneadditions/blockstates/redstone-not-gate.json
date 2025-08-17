@@ -1,0 +1,43 @@
+{
+  "variants": {
+    "powered=false,delay=1,facing=north": { "model": "redstoneadditions:block/not-gate-off", "y": 180 },
+    "powered=false,delay=1,facing=south": { "model": "redstoneadditions:block/not-gate-off", "y": 0 },
+    "powered=false,delay=1,facing=west":  { "model": "redstoneadditions:block/not-gate-off", "y": 90 },
+    "powered=false,delay=1,facing=east":  { "model": "redstoneadditions:block/not-gate-off", "y": 270 },
+
+    "powered=false,delay=2,facing=north": { "model": "redstoneadditions:block/not-gate-off", "y": 180 },
+    "powered=false,delay=2,facing=south": { "model": "redstoneadditions:block/not-gate-off", "y": 0 },
+    "powered=false,delay=2,facing=west":  { "model": "redstoneadditions:block/not-gate-off", "y": 90 },
+    "powered=false,delay=2,facing=east":  { "model": "redstoneadditions:block/not-gate-off", "y": 270 },
+
+    "powered=false,delay=3,facing=north": { "model": "redstoneadditions:block/not-gate-off", "y": 180 },
+    "powered=false,delay=3,facing=south": { "model": "redstoneadditions:block/not-gate-off", "y": 0 },
+    "powered=false,delay=3,facing=west":  { "model": "redstoneadditions:block/not-gate-off", "y": 90 },
+    "powered=false,delay=3,facing=east":  { "model": "redstoneadditions:block/not-gate-off", "y": 270 },
+
+    "powered=false,delay=4,facing=north": { "model": "redstoneadditions:block/not-gate-off", "y": 180 },
+    "powered=false,delay=4,facing=south": { "model": "redstoneadditions:block/not-gate-off", "y": 0 },
+    "powered=false,delay=4,facing=west":  { "model": "redstoneadditions:block/not-gate-off", "y": 90 },
+    "powered=false,delay=4,facing=east":  { "model": "redstoneadditions:block/not-gate-off", "y": 270 },
+
+    "powered=true,delay=1,facing=north": { "model": "redstoneadditions:block/not-gate", "y": 180 },
+    "powered=true,delay=1,facing=south": { "model": "redstoneadditions:block/not-gate", "y": 0 },
+    "powered=true,delay=1,facing=west":  { "model": "redstoneadditions:block/not-gate", "y": 90 },
+    "powered=true,delay=1,facing=east":  { "model": "redstoneadditions:block/not-gate", "y": 270 },
+
+    "powered=true,delay=2,facing=north": { "model": "redstoneadditions:block/not-gate", "y": 180 },
+    "powered=true,delay=2,facing=south": { "model": "redstoneadditions:block/not-gate", "y": 0 },
+    "powered=true,delay=2,facing=west":  { "model": "redstoneadditions:block/not-gate", "y": 90 },
+    "powered=true,delay=2,facing=east":  { "model": "redstoneadditions:block/not-gate", "y": 270 },
+
+    "powered=true,delay=3,facing=north": { "model": "redstoneadditions:block/not-gate", "y": 180 },
+    "powered=true,delay=3,facing=south": { "model": "redstoneadditions:block/not-gate", "y": 0 },
+    "powered=true,delay=3,facing=west":  { "model": "redstoneadditions:block/not-gate", "y": 90 },
+    "powered=true,delay=3,facing=east":  { "model": "redstoneadditions:block/not-gate", "y": 270 },
+
+    "powered=true,delay=4,facing=north": { "model": "redstoneadditions:block/not-gate", "y": 180 },
+    "powered=true,delay=4,facing=south": { "model": "redstoneadditions:block/not-gate", "y": 0 },
+    "powered=true,delay=4,facing=west":  { "model": "redstoneadditions:block/not-gate", "y": 90 },
+    "powered=true,delay=4,facing=east":  { "model": "redstoneadditions:block/not-gate", "y": 270 }
+  }
+}

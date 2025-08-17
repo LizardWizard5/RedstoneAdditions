@@ -1,12 +1,11 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "MCAssets121:not-gate-off",
-		"1": "MCAssets121:block/copper_block",
-		"3": "MCAssets121:block/redstone_torch",
-		"4": "MCAssets121:block/repeater",
-		"5": "MCAssets121:block/smooth_stone",
-		"particle": "MCAssets121:not-gate-off"
+		"1": "block/copper_block",
+		"3": "block/redstone_torch",
+		"4": "block/repeater",
+		"5": "block/smooth_stone",
+		"particle": "redstoneadditions:block/not-gate"
 	},
 	"elements": [
 		{
@@ -14,12 +13,12 @@
 			"from": [0, 0, 0],
 			"to": [16, 2, 16],
 			"faces": {
-				"north": {"uv": [0, 14, 16, 16], "texture": "#0", "cullface": "north"},
-				"east": {"uv": [0, 14, 16, 16], "texture": "#0", "cullface": "east"},
-				"south": {"uv": [0, 14, 16, 16], "texture": "#0", "cullface": "south"},
-				"west": {"uv": [0, 14, 16, 16], "texture": "#0", "cullface": "west"},
-				"up": {"uv": [0, 0, 16, 16], "texture": "#0"},
-				"down": {"uv": [0, 0, 16, 16], "texture": "#0", "cullface": "down"}
+				"north": {"uv": [0, 14, 16, 16], "texture": "#3", "cullface": "north"},
+				"east": {"uv": [0, 14, 16, 16], "texture": "#3", "cullface": "east"},
+				"south": {"uv": [0, 14, 16, 16], "texture": "#3", "cullface": "south"},
+				"west": {"uv": [0, 14, 16, 16], "texture": "#3", "cullface": "west"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#3"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#3", "cullface": "down"}
 			}
 		},
 		{

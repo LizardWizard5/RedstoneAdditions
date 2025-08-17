@@ -81,6 +81,7 @@ public class Redstoneadditions {
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
         if(event.getTabKey() == CreativeModeTabs.REDSTONE_BLOCKS) {
             event.accept(ModBlocks.REDSTONE_CLOCK);
+            event.accept(ModBlocks.REDSTONE_NOT_GATE);
 
         }
     }

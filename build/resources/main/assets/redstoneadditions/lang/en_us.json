@@ -1,3 +1,5 @@
 {
-  "block.redstoneadditions.redstone_clock": "Redstone Clock"
+  "block.redstoneadditions.redstone-clock": "Clock",
+  "block.redstoneadditions.redstone-not-gate": "Not Gate"
+
 }
