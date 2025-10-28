@@ -83,6 +83,7 @@ public class Redstoneadditions {
             event.accept(ModBlocks.REDSTONE_CLOCK);
             event.accept(ModBlocks.REDSTONE_NOT_GATE);
             event.accept(ModBlocks.REDSTONE_OR_GATE);
+            event.accept(ModBlocks.REDSTONE_AND_GATE);
 
         }
     }

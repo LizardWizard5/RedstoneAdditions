@@ -1,6 +1,7 @@
 package ca.lizardwizard.redstoneadditions.block;
 
 import ca.lizardwizard.redstoneadditions.Redstoneadditions;
+import ca.lizardwizard.redstoneadditions.block.custom.AndGate;
 import ca.lizardwizard.redstoneadditions.block.custom.NotGate;
 import ca.lizardwizard.redstoneadditions.block.custom.OrGate;
 import ca.lizardwizard.redstoneadditions.block.custom.RedstoneClock;
@@ -31,6 +32,9 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> REDSTONE_OR_GATE = registerBlock("redstone-or-gate",
             () -> new OrGate(BlockBehaviour.Properties.of().strength(2f)));
+
+    public static final RegistryObject<Block> REDSTONE_AND_GATE = registerBlock("redstone-and-gate",
+            () -> new AndGate(BlockBehaviour.Properties.of().strength(2f)));
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);

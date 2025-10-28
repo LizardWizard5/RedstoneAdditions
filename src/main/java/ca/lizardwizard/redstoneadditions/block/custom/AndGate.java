@@ -2,9 +2,6 @@ package ca.lizardwizard.redstoneadditions.block.custom;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -14,21 +11,20 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class OrGate  extends Block {
+public class AndGate extends Block {
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 2, 16);
     public static final DirectionProperty PoweredSide = BlockStateProperties.HORIZONTAL_FACING;
-    public static final BooleanProperty  XOR = BooleanProperty.create("xor");
-    public OrGate(Properties p_49795_) {
+
+    public AndGate(Properties p_49795_) {
         super(p_49795_);
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(POWERED, false)
-                .setValue(FACING, Direction.NORTH).setValue(PoweredSide, Direction.NORTH).setValue(XOR, false));
+                .setValue(FACING, Direction.NORTH).setValue(PoweredSide, Direction.NORTH));
     }
 
     // Boilerplate code
@@ -52,15 +48,7 @@ public class OrGate  extends Block {
     public boolean isSignalSource(BlockState state) {
         return true; // This block can be used as a signal source
     }
-    @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit){
-        if(level.isClientSide) {
-            return InteractionResult.SUCCESS;
-        }
-        //Toggle XOR
-        state.setValue(XOR, !state.getValue(XOR));
-        return InteractionResult.SUCCESS;
-    }
+
 
 
     //Redstone can only connect left right and forward
@@ -99,15 +87,12 @@ public class OrGate  extends Block {
         Direction leftSide = facing.getCounterClockWise();
         Direction rightSide = facing.getClockWise();
 
-        // Read power *from the back neighbor* toward us
+        // Read power from the left and right neighbors
         int leftPower = level.getSignal(pos.relative(leftSide), leftSide);
         int rightPower = level.getSignal(pos.relative(rightSide), rightSide);
 
-
-        boolean shouldBePowered = (leftPower >0 || rightPower>0); // OR gate
-        if(state.getValue(XOR)){
-            shouldBePowered = (leftPower >0) ^ (rightPower>0); // XOR gate
-        }
+        //AND gate logic
+        boolean shouldBePowered = (leftPower > 0 && rightPower > 0); // AND gate
         if (state.getValue(POWERED) != shouldBePowered) {
 
             level.setBlock(pos, state.setValue(POWERED, shouldBePowered), 3);
