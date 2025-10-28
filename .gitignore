@@ -1,8 +1,8 @@
 ## Based on GitHub's Eclipse .gitignore
 
-run/
+run/*
 .gradle/
-build/
+build/*
 gradle-app.setting
 
 ## IntelliJ IDEA
