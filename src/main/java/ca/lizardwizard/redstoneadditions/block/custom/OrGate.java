@@ -36,12 +36,13 @@ public class OrGate  extends Block {
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(POWERED);
         builder.add(FACING);
+        builder.add(XOR);
     }
 
     //Facing same direction as player
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
+        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection());
     }
 
     @Override
@@ -52,13 +53,18 @@ public class OrGate  extends Block {
     public boolean isSignalSource(BlockState state) {
         return true; // This block can be used as a signal source
     }
+
+    //Upon right click, toggle between OR and XOR mode
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit){
         if(level.isClientSide) {
             return InteractionResult.SUCCESS;
         }
-        //Toggle XOR
-        state.setValue(XOR, !state.getValue(XOR));
+
+        //Toggle XOR property
+
+        level.setBlock(pos, state.setValue(XOR, !state.getValue(XOR)), 3);
+        level.updateNeighborsAt(pos.relative(state.getValue(FACING).getOpposite()), this);
         return InteractionResult.SUCCESS;
     }
 
@@ -86,6 +92,12 @@ public class OrGate  extends Block {
             return state.getValue(POWERED) ? 15 : 0;
         }
         return 0;
+    }
+
+    @Override
+    public int getDirectSignal(BlockState state, BlockGetter level, BlockPos pos, Direction side) {
+        // Often same as getSignal for repeaters/comparators reading strong power
+        return getSignal(state, level, pos, side);        // strong power
     }
 
 
