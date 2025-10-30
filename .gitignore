@@ -1,43 +1,33 @@
-## Based on GitHub's Eclipse .gitignore
+# --- OS junk ---
+.DS_Store
+Thumbs.db
 
-run/*
-.gradle/
-build/*
-gradle-app.setting
-
-## IntelliJ IDEA
-
+# --- IDEs ---
 .idea/
 *.iml
-*.iws
 *.ipr
+*.iws
+.vscode/
 
-## Eclipse
+# --- Gradle / builds ---
+/.gradle/
+/build/
+/out/
+/run/                 # Forge dev run dir (logs, configs, etc.)
+/logs/
+/crash-reports/
 
-eclipse/
-*.pydevproject
-.project
-.metadata
-bin/
-tmp/
-*.tmp
-*.bak
-*.swp
-*~.nib
-local.properties
-.classpath
-.settings/
-.loadpath
+# Compiled stuff
+*.class
 
-# External tool builders
-.externalToolBuilders/
+# Archives / artifacts
+*.jar
+*.zip
 
-# Locally stored "Eclipse launch configurations"
-*.launch
+# Misc
+*.log
 
-# CDT-specific
-.cproject
-
-# PDT-specific
-.buildpath
-
+# Keep the Gradle wrapper (SHOULD be committed)
+!gradlew
+!gradlew.bat
+!gradle/wrapper/**
