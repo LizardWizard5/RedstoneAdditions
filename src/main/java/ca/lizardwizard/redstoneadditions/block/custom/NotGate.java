@@ -26,12 +26,15 @@ public class NotGate extends Block {
     public static final IntegerProperty DELAY = IntegerProperty.create("delay", 1, 4);
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 2, 16);
+    public static final BooleanProperty BURNED = BooleanProperty.create("burned");//Handles if gate is flipping too fast
+    int flips = 0;
+    int ticks=0;
 
     public NotGate(Properties p_49795_) {
         super(p_49795_);
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(POWERED, false)
-                .setValue(DELAY, 1).setValue(FACING, Direction.NORTH));
+                .setValue(DELAY, 1).setValue(FACING, Direction.NORTH).setValue(BURNED, false));
     }
 
     @Override
@@ -54,6 +57,7 @@ public class NotGate extends Block {
         builder.add(POWERED);
         builder.add(DELAY);
         builder.add(FACING);
+        builder.add(BURNED);
     }
 
     @Override
@@ -72,8 +76,19 @@ public class NotGate extends Block {
     }
 
     @Override
+    public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
+
+        if (!level.isClientSide) { // Server-side only
+            int delay = state.getValue(DELAY);
+            level.scheduleTick(pos, this, 20); // Schedule the first tick in 20 ticks (1 second)
+        }
+
+
+    }
+
+    @Override
     public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
-        if (level.isClientSide) return; // server-side only
+        if (level.isClientSide || state.getValue(BURNED)) return; // server-side only or burned out
 
         Direction facing = state.getValue(FACING);
         Direction inputSide = facing; // convention: input is the back
@@ -83,7 +98,20 @@ public class NotGate extends Block {
 
         boolean shouldBePowered = (inputPower == 0); // NOT gate
         if (state.getValue(POWERED) != shouldBePowered) {
-            level.setBlock(pos, state.setValue(POWERED, shouldBePowered), 3);
+            flips++;
+            System.out.println("Flips: " + flips + " ticks: " + ticks);
+            if(flips >= 50) {
+                // Burn out the gate
+                level.setBlock(pos, state.setValue(BURNED, true).setValue(POWERED,false), 3);
+                level.scheduleTick(pos, this, 40);
+                System.out.println("Burned should be setting TRUE");
+                flips = 0;
+            }
+            else {
+                level.setBlock(pos, state.setValue(POWERED, shouldBePowered), 3);
+            }
+
+
             // Tell neighbors our output changed
             level.updateNeighborsAt(pos, this);
             level.updateNeighborsAt(pos.relative(facing), this);
@@ -91,6 +119,22 @@ public class NotGate extends Block {
 
 
         return;
+    }
+
+
+    @Override
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        ticks++;
+        if(state.getValue(BURNED)){
+            level.setBlock(pos, state.setValue(BURNED, false).setValue(POWERED,true), 3);
+
+        }
+        if(ticks >=2){
+            flips = 0;
+            ticks=0;
+        }
+
+        level.scheduleTick(pos, this, 20);//Continue normal ticking
     }
 
 
