@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "aaa",
+    "bcd",
+    "eee"
+  ],
+  "key": {
+    "a": { "item": "minecraft:redstone_torch" },
+    "b": { "item": "minecraft:redstone" },
+    "c": { "item": "minecraft:repeater" },
+    "d": { "item": "minecraft:copper_ingot" },
+    "e": { "item": "minecraft:iron_ingot" }
+  },
+    "result": {
+        "item": "redstoneadditions:redstone-and-gate",
+        "count": 1
+    }
+}

@@ -31,3 +31,6 @@ Thumbs.db
 !gradlew
 !gradlew.bat
 !gradle/wrapper/**
+
+# Aseprite files
+*.ase

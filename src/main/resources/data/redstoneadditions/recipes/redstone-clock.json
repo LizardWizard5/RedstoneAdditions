@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "   ",
+    "bca",
+    "eee"
+  ],
+  "key": {
+    "a": { "item": "minecraft:redstone_torch" },
+    "b": { "item": "minecraft:redstone" },
+    "c": { "item": "minecraft:repeater" },
+    "e": { "item": "minecraft:iron_ingot" }
+  },
+  "result": {
+    "item": "redstoneadditions:redstone-clock",
+    "count": 1
+  }
+}
