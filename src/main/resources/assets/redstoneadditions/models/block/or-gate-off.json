@@ -13,20 +13,6 @@
 	},
 	"elements": [
 		{
-			"from": [7, 4.5, -1],
-			"to": [9, 9.5, 1],
-			"shade": false,
-			"rotation": {"angle": -22.5, "axis": "x", "origin": [8, 4.5, 0]},
-			"faces": {
-				"north": {"uv": [7, 6, 9, 16], "texture": "#11"},
-				"east": {"uv": [7, 6, 9, 16], "texture": "#11"},
-				"south": {"uv": [7, 6, 9, 16], "texture": "#11"},
-				"west": {"uv": [7, 6, 9, 16], "texture": "#11"},
-				"up": {"uv": [7, 6, 9, 8], "rotation": 270, "texture": "#11"},
-				"down": {"uv": [7, 13, 9, 15], "rotation": 90, "texture": "#missing"}
-			}
-		},
-		{
 			"name": "Repeater",
 			"from": [10.65, 2, 6],
 			"to": [14.65, 3, 10],
@@ -79,6 +65,19 @@
 				"up": {"uv": [0, 0, 16, 16], "texture": "#7"},
 				"down": {"uv": [0, 0, 16, 16], "texture": "#12", "cullface": "down"}
 			}
+		},
+		{
+			"from": [7, 1, -1],
+			"to": [9, 9, 1],
+			"shade": false,
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [0, 2, -7]},
+			"faces": {
+				"north": {"uv": [7, 6, 9, 15], "texture": "#11"},
+				"east": {"uv": [7, 6, 9, 15], "texture": "#11"},
+				"south": {"uv": [7, 6, 9, 15], "texture": "#11"},
+				"west": {"uv": [7, 6, 9, 15], "texture": "#11"},
+				"up": {"uv": [7, 6, 9, 8], "texture": "#11"}
+			}
 		}
 	],
 	"groups": [
@@ -86,8 +85,9 @@
 			"name": "Torch",
 			"origin": [8, 8, 8],
 			"color": 0,
-			"children": [0]
+			"children": []
 		},
+		0,
 		1,
 		2,
 		3,
