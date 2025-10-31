@@ -4,9 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -17,7 +14,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -76,21 +72,36 @@ public class NotGate extends Block {
         if (level.isClientSide) return; // server-side only
 
         Direction facing = state.getValue(FACING);
-        Direction inputSide = facing; // convention: input is the back
+        Direction inputSide = facing.getOpposite();
 
-        // Read power *from the back neighbor* toward us
+        boolean shouldBePowered = shouldBePowered(level, pos, state, inputSide);
+        if (state.getValue(POWERED) != shouldBePowered) {
+            ServerLevel serverLevel = (ServerLevel) level;
+            if (!serverLevel.getBlockTicks().hasScheduledTick(pos, this)) {
+                serverLevel.scheduleTick(pos, this, getDelayTicks(state));
+            }
+        }
+    }
+
+    private boolean shouldBePowered(Level level, BlockPos pos, BlockState state, Direction inputSide) {
         int inputPower = level.getSignal(pos.relative(inputSide), inputSide);
+        return inputPower == 0;
+    }
 
-        boolean shouldBePowered = (inputPower == 0); // NOT gate
+    private int getDelayTicks(BlockState state) {
+        return state.getValue(DELAY);
+    }
+
+    @Override
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        Direction facing = state.getValue(FACING);
+        Direction inputSide = facing.getOpposite();
+        boolean shouldBePowered = shouldBePowered(level, pos, state, inputSide);
         if (state.getValue(POWERED) != shouldBePowered) {
             level.setBlock(pos, state.setValue(POWERED, shouldBePowered), 3);
-            // Tell neighbors our output changed
             level.updateNeighborsAt(pos, this);
             level.updateNeighborsAt(pos.relative(facing), this);
         }
-
-
-        return;
     }
 
 
