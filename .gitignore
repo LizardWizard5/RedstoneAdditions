@@ -34,3 +34,5 @@ Thumbs.db
 
 # Aseprite files
 *.ase
+# Paint.net files
+*.pdn

@@ -1,6 +1,5 @@
 modLoader = "javafml"
-# JavaFML/Forge major for 1.20.x starts at 47. Using an upper cap before 50 keeps it on 1.20.x lines only.
-loaderVersion = "[47,50)"
+loaderVersion = "[47,48)"         # Forge/JavaFML 47.x only
 
 license = "${mod_license}"
 
@@ -13,20 +12,16 @@ description = '''${mod_description}'''
 
 # ---- Dependencies ----
 
-# Forge itself
 [[dependencies."${mod_id}"]]
 modId = "forge"
 mandatory = true
-# Forge 47.x–49.x covers MC 1.20.1–1.20.4 lines. Bump upper bound if you add newer 1.20.x lines.
-versionRange = "[47,50)"
+versionRange = "[47,48)"          # Forge 47.x (MC 1.20.1)
 ordering = "NONE"
 side = "BOTH"
 
-# Minecraft
 [[dependencies."${mod_id}"]]
 modId = "minecraft"
 mandatory = true
-# Any 1.20.* but not 1.21
-versionRange = "[1.20,1.21)"
+versionRange = "[1.20.1,1.20.2)"  # Exactly MC 1.20.1
 ordering = "NONE"
 side = "BOTH"

@@ -88,8 +88,10 @@ public class NotGate extends Block {
 
     @Override
     public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
-        if (level.isClientSide || state.getValue(BURNED)) return; // server-side only or burned out
-
+        if (level.isClientSide ) return; // server-side only or burned out
+        if(state.getValue(BURNED)) {
+            return;
+        };
         Direction facing = state.getValue(FACING);
         Direction inputSide = facing; // convention: input is the back
 
@@ -103,7 +105,7 @@ public class NotGate extends Block {
             if(flips >= 50) {//Only permits 50 states changes per 2 ticks
                 // Burn out the gate
                 level.setBlock(pos, state.setValue(BURNED, true).setValue(POWERED,false), 3);
-                level.scheduleTick(pos, this, 40);
+                level.scheduleTick(pos, this, 100);
 
                 flips = 0;
             }
