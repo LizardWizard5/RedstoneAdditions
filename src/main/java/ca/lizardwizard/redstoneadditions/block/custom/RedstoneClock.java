@@ -39,8 +39,6 @@ public class RedstoneClock extends Block {
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(POWERED, false)
                 .setValue(DELAY, 20).setValue(FACING, Direction.NORTH));
-
-
     }
 
     @Override

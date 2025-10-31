@@ -98,13 +98,13 @@ public class NotGate extends Block {
 
         boolean shouldBePowered = (inputPower == 0); // NOT gate
         if (state.getValue(POWERED) != shouldBePowered) {
+
             flips++;
-            System.out.println("Flips: " + flips + " ticks: " + ticks);
-            if(flips >= 50) {
+            if(flips >= 50) {//Only permits 50 states changes per 2 ticks
                 // Burn out the gate
                 level.setBlock(pos, state.setValue(BURNED, true).setValue(POWERED,false), 3);
                 level.scheduleTick(pos, this, 40);
-                System.out.println("Burned should be setting TRUE");
+
                 flips = 0;
             }
             else {
