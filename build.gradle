@@ -1,5 +1,5 @@
 plugins {
-    id "net.minecraftforge.gradle" version "6.0.+"
+    id "net.minecraftforge.gradle" version "6.0.29"   // pin to a concrete version; avoid 6.0.+
 }
 
 java {
@@ -7,31 +7,54 @@ java {
 }
 
 repositories {
-    // Forge maven
     maven { url = "https://maven.minecraftforge.net" }
-
-    // Mojang libraries (authlib, brigadier, DFU, etc.)
     maven {
         url = "https://libraries.minecraft.net"
-        content { includeGroup "com.mojang" } // keep this tight so only Mojang deps come from here
+        content { includeGroup "com.mojang" }
     }
-
-    // General deps
     mavenCentral()
 }
-
 
 minecraft {
     mappings channel: "official", version: "1.21.10"
 }
 
-
 dependencies {
-    // Use your exact Forge build here:
     minecraft "net.minecraftforge:forge:1.21.10-60.0.14"
 }
 
-// (Optional) tidy compile options
 tasks.withType(JavaCompile).configureEach {
     options.encoding = "UTF-8"
+}
+
+/** Expand ${...} placeholders in mods.toml (and pack.mcmeta if you use them there) **/
+tasks.processResources {
+    // force rerun when these change (helps avoid stale caching)
+    inputs.property "mod_id",                  project.findProperty("mod_id")
+    inputs.property "mod_name",                project.findProperty("mod_name")
+    inputs.property "mod_version",             project.findProperty("mod_version")
+    inputs.property "mod_authors",             project.findProperty("mod_authors")
+    inputs.property "mod_description",         project.findProperty("mod_description")
+    inputs.property "mod_license",             project.findProperty("mod_license")
+    inputs.property "loader_version_range",    project.findProperty("loader_version_range")
+    inputs.property "forge_version_range",     project.findProperty("forge_version_range")
+    inputs.property "minecraft_version_range", project.findProperty("minecraft_version_range")
+
+    filesMatching("META-INF/mods.toml") {
+        expand(
+                mod_id:                  project.findProperty("mod_id"),
+                mod_name:                project.findProperty("mod_name"),
+                mod_version:             project.findProperty("mod_version"),
+                mod_authors:             project.findProperty("mod_authors"),
+                mod_description:         project.findProperty("mod_description"),
+                mod_license:             project.findProperty("mod_license"),
+                loader_version_range:    project.findProperty("loader_version_range"),
+                forge_version_range:     project.findProperty("forge_version_range"),
+                minecraft_version_range: project.findProperty("minecraft_version_range")
+        )
+        filteringCharset = 'UTF-8'
+    }
+
+    // Uncomment if pack.mcmeta also uses ${...}
+    // filesMatching("pack.mcmeta") { expand([ pack_format_number: project.findProperty("pack_format_number") ]) }
 }

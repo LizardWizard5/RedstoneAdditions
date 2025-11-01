@@ -14,23 +14,27 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nullable;
+
 public class OrGate  extends Block {
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
-    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+    public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 2, 16);
-    public static final DirectionProperty PoweredSide = BlockStateProperties.HORIZONTAL_FACING;
+
     public static final BooleanProperty  XOR = BooleanProperty.create("xor");
     public OrGate(Properties p_49795_) {
         super(p_49795_);
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(POWERED, false)
-                .setValue(FACING, Direction.NORTH).setValue(PoweredSide, Direction.NORTH).setValue(XOR, false));
+                .setValue(FACING, Direction.NORTH).setValue(XOR, false));
     }
 
     // Boilerplate code
@@ -57,9 +61,10 @@ public class OrGate  extends Block {
     }
 
     //Upon right click, toggle between OR and XOR mode
+    //useWithoutItem is the only 1.21.10 method I am seeing that replaces use()
     @Override
-    public InteractionResult use(BlockState state,Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit){
-        if(level.isClientSide) {
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit){
+        if(level.isClientSide()) {
             return InteractionResult.SUCCESS;
         }
 
@@ -104,8 +109,8 @@ public class OrGate  extends Block {
 
 
     @Override
-    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
-        if (level.isClientSide) return; // server-side only
+    protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, @Nullable Orientation p_369340_, boolean p_55046_) {
+        if (level.isClientSide()) return; // server-side only
 
         //Check for water
         if (level.getFluidState(pos).isSourceOfType(Fluids.WATER)) {

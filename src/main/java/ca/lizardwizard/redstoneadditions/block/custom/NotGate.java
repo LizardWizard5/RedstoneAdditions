@@ -16,15 +16,19 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import javax.annotation.Nullable;
+
 public class NotGate extends Block {
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
     public static final IntegerProperty DELAY = IntegerProperty.create("delay", 1, 4);
-    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+    public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 2, 16);
     public static final BooleanProperty BURNED = BooleanProperty.create("burned");//Handles if gate is flipping too fast
     int flips = 0;
@@ -78,7 +82,7 @@ public class NotGate extends Block {
     @Override
     public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
 
-        if (!level.isClientSide) { // Server-side only
+        if (!level.isClientSide()) { // Server-side only
             int delay = state.getValue(DELAY);
             level.scheduleTick(pos, this, 20); // Schedule the first tick in 20 ticks (1 second)
         }
@@ -86,9 +90,11 @@ public class NotGate extends Block {
 
     }
 
+
+    //public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
     @Override
-    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
-        if (level.isClientSide ) return; // server-side only or burned out
+    protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, @Nullable Orientation p_369340_, boolean p_55046_){
+        if (level.isClientSide() ) return; // server-side only or burned out
         if(state.getValue(BURNED)) {
             return;
         };
