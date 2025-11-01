@@ -45,9 +45,10 @@ public class Redstoneadditions {
 
     public Redstoneadditions(FMLJavaModLoadingContext context) {
 
-        IEventBus modEventBus = context.getModEventBus();
+        var modBusGroup = context.getModBusGroup();
+
         // Register the commonSetup method for modloading
-        modEventBus.addListener(this::commonSetup);
+        FMLCommonSetupEvent.getBus(modBusGroup).addListener(this::commonSetup);
 
 
 
@@ -56,14 +57,14 @@ public class Redstoneadditions {
         MinecraftForge.EVENT_BUS.register(this);
 
         LOGGER.info("RA: Loading Redstone Additions Mod!");
-        ModItems.register(modEventBus);
-        ModBlocks.register(modEventBus);
+        ModItems.register(modBusGroup);
+        ModBlocks.register(modBusGroup);
 
         LOGGER.info("RA: Registered Mod Items and Blocks!");
 
         LOGGER.info("RA: Adding blocks to Creative Tabs!");
         // Register the item to a creative tab
-        modEventBus.addListener(this::addCreative);
+        BuildCreativeModeTabContentsEvent.BUS.addListener(Redstoneadditions::addCreative);
         LOGGER.info("RA: Registered Creative Tab Mod Items and Blocks!");
 
         // Register our mod's ForgeConfigSpec so that Forge can create and load the config file for us
