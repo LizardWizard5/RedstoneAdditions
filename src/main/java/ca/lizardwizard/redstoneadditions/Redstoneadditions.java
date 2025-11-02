@@ -19,8 +19,7 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.eventbus.api.listener.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -45,25 +44,21 @@ public class Redstoneadditions {
 
     public Redstoneadditions(FMLJavaModLoadingContext context) {
 
-        IEventBus modEventBus = context.getModEventBus();
+        var modBusGroup = context.getModBusGroup();
+
         // Register the commonSetup method for modloading
-        modEventBus.addListener(this::commonSetup);
+        FMLCommonSetupEvent.getBus(modBusGroup).addListener(this::commonSetup);
 
-
-
-
-        // Register ourselves for server and other game events we are interested in
-        MinecraftForge.EVENT_BUS.register(this);
 
         LOGGER.info("RA: Loading Redstone Additions Mod!");
-        ModItems.register(modEventBus);
-        ModBlocks.register(modEventBus);
+        ModItems.register(modBusGroup);
+        ModBlocks.register(modBusGroup);
 
         LOGGER.info("RA: Registered Mod Items and Blocks!");
 
         LOGGER.info("RA: Adding blocks to Creative Tabs!");
         // Register the item to a creative tab
-        modEventBus.addListener(this::addCreative);
+        BuildCreativeModeTabContentsEvent.BUS.addListener(Redstoneadditions::addCreative);
         LOGGER.info("RA: Registered Creative Tab Mod Items and Blocks!");
 
         // Register our mod's ForgeConfigSpec so that Forge can create and load the config file for us
@@ -80,7 +75,7 @@ public class Redstoneadditions {
     }
 
     // Add the example block item to the building blocks tab
-    private void addCreative(BuildCreativeModeTabContentsEvent event) {
+    private static void addCreative(BuildCreativeModeTabContentsEvent event) {
         if(event.getTabKey() == CreativeModeTabs.REDSTONE_BLOCKS) {
             event.accept(ModBlocks.REDSTONE_CLOCK);
             event.accept(ModBlocks.REDSTONE_NOT_GATE);
@@ -90,17 +85,10 @@ public class Redstoneadditions {
         }
     }
 
-    // You can use SubscribeEvent and let the Event Bus discover methods to call
-    @SubscribeEvent
-    public void onServerStarting(ServerStartingEvent event) {
-        // Do something when the server starts
-
-    }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
-    @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    @Mod.EventBusSubscriber(modid = MODID, value = Dist.CLIENT)
     public static class ClientModEvents {
-
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             // Some client setup code

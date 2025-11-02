@@ -19,7 +19,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
@@ -31,7 +32,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class RedstoneClock extends Block {
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
     public static final IntegerProperty DELAY = IntegerProperty.create("delay", 1, 20);
-    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+    public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 2, 16);
 
     public RedstoneClock(Properties p_49795_) {
@@ -69,7 +70,7 @@ public class RedstoneClock extends Block {
         Direction facing = level.getBlockState(pos).getValue(FACING);
         state.setValue(FACING, facing);
         level.setBlock(pos, state, 3);
-        if (!level.isClientSide) { // Server-side only
+        if (!level.isClientSide()) { // Server-side only
             int delay = state.getValue(DELAY);
             level.scheduleTick(pos, this, delay); // Schedule the first tick in 20 ticks (1 second)
         }
@@ -100,7 +101,7 @@ public class RedstoneClock extends Block {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit){
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit){
         int delay = state.getValue(DELAY);
         switch(delay){
             case 20:
@@ -121,7 +122,7 @@ public class RedstoneClock extends Block {
 
         }
         level.setBlock(pos, state.setValue(DELAY, delay), 3);
-        if (!level.isClientSide) { // Server-side only
+        if (!level.isClientSide()) { // Server-side only
 
             level.scheduleTick(pos, this, delay);
         }
