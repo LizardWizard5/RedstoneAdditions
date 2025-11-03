@@ -1,0 +1,27 @@
+{
+  "variants": {
+    "facing=north,powered=false,nand=false": { "model": "redstoneadditions:block/and-gate/and-gate-off" , "y": 0 },
+    "facing=east,powered=false,nand=false":  { "model": "redstoneadditions:block/and-gate/and-gate-off", "y": 90 },
+    "facing=south,powered=false,nand=false": { "model": "redstoneadditions:block/and-gate/and-gate-off", "y": 180 },
+    "facing=west,powered=false,nand=false":  { "model": "redstoneadditions:block/and-gate/and-gate-off", "y": 270 },
+
+
+    "facing=north,powered=true,nand=false": { "model": "redstoneadditions:block/and-gate/and-gate" , "y": 0 },
+    "facing=east,powered=true,nand=false":  { "model": "redstoneadditions:block/and-gate/and-gate", "y": 90 },
+    "facing=south,powered=true,nand=false": { "model": "redstoneadditions:block/and-gate/and-gate", "y": 180 },
+    "facing=west,powered=true,nand=false":  { "model": "redstoneadditions:block/and-gate/and-gate", "y": 270 },
+
+
+
+    "facing=north,powered=false,nand=true": { "model": "redstoneadditions:block/and-gate/and-gate-off-nand" , "y": 0 },
+    "facing=east,powered=false,nand=true":  { "model": "redstoneadditions:block/and-gate/and-gate-off-nand", "y": 90 },
+    "facing=south,powered=false,nand=true": { "model": "redstoneadditions:block/and-gate/and-gate-off-nand", "y": 180 },
+    "facing=west,powered=false,nand=true":  { "model": "redstoneadditions:block/and-gate/and-gate-off-nand", "y": 270 },
+
+
+    "facing=north,powered=true,nand=true": { "model": "redstoneadditions:block/and-gate/and-gate-nand" , "y": 0 },
+    "facing=east,powered=true,nand=true":  { "model": "redstoneadditions:block/and-gate/and-gate-nand", "y": 90 },
+    "facing=south,powered=true,nand=true": { "model": "redstoneadditions:block/and-gate/and-gate-nand", "y": 180 },
+    "facing=west,powered=true,nand=true":  { "model": "redstoneadditions:block/and-gate/and-gate-nand", "y": 270 }
+  }
+}

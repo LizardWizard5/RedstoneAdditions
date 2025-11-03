@@ -1,0 +1,26 @@
+{
+  "variants": {
+    "facing=north,powered=false,xor=false": { "model": "redstoneadditions:block/or-gate/or-gate-off" , "y": 0 },
+    "facing=east,powered=false,xor=false":  { "model": "redstoneadditions:block/or-gate/or-gate-off", "y": 90 },
+    "facing=south,powered=false,xor=false": { "model": "redstoneadditions:block/or-gate/or-gate-off", "y": 180 },
+    "facing=west,powered=false,xor=false":  { "model": "redstoneadditions:block/or-gate/or-gate-off", "y": 270 },
+
+
+    "facing=north,powered=true,xor=false": { "model": "redstoneadditions:block/or-gate/or-gate" , "y": 0 },
+    "facing=east,powered=true,xor=false":  { "model": "redstoneadditions:block/or-gate/or-gate", "y": 90 },
+    "facing=south,powered=true,xor=false": { "model": "redstoneadditions:block/or-gate/or-gate", "y": 180 },
+    "facing=west,powered=true,xor=false":  { "model": "redstoneadditions:block/or-gate/or-gate", "y": 270 },
+
+
+    "facing=north,powered=false,xor=true": { "model": "redstoneadditions:block/or-gate/or-gate-off-xor" , "y": 0 },
+    "facing=east,powered=false,xor=true":  { "model": "redstoneadditions:block/or-gate/or-gate-off-xor", "y": 90 },
+    "facing=south,powered=false,xor=true": { "model": "redstoneadditions:block/or-gate/or-gate-off-xor", "y": 180 },
+    "facing=west,powered=false,xor=true":  { "model": "redstoneadditions:block/or-gate/or-gate-off-xor", "y": 270 },
+
+
+    "facing=north,powered=true,xor=true": { "model": "redstoneadditions:block/or-gate/or-gate-xor" , "y": 0 },
+    "facing=east,powered=true,xor=true":  { "model": "redstoneadditions:block/or-gate/or-gate-xor", "y": 90 },
+    "facing=south,powered=true,xor=true": { "model": "redstoneadditions:block/or-gate/or-gate-xor", "y": 180 },
+    "facing=west,powered=true,xor=true":  { "model": "redstoneadditions:block/or-gate/or-gate-xor", "y": 270 }
+  }
+}
