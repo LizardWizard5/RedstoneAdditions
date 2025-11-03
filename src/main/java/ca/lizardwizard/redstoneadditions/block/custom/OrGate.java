@@ -22,15 +22,14 @@ import org.jetbrains.annotations.NotNull;
 
 public class OrGate  extends Block {
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
-    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+    public static final DirectionProperty FACING = BlockStateProperties.FACING;
     public static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 2, 16);
-    public static final DirectionProperty PoweredSide = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty  XOR = BooleanProperty.create("xor");
     public OrGate(Properties p_49795_) {
         super(p_49795_);
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(POWERED, false)
-                .setValue(FACING, Direction.NORTH).setValue(PoweredSide, Direction.NORTH).setValue(XOR, false));
+                .setValue(FACING, Direction.NORTH).setValue(XOR, false));
     }
 
     // Boilerplate code
