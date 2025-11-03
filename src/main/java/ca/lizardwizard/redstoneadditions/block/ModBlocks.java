@@ -10,7 +10,6 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-
 import net.minecraftforge.eventbus.api.bus.BusGroup;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -22,10 +21,25 @@ import java.util.function.Supplier;
 
 
 public class ModBlocks {
-
     public static final DeferredRegister<Block> BLOCKS =
             DeferredRegister.create(ForgeRegistries.BLOCKS, Redstoneadditions.MODID);
 
+
+
+    public static final RegistryObject<Block> REDSTONE_CLOCK = registerBlock("redstone-clock",
+            () -> new RedstoneClock(BlockBehaviour.Properties.of().strength(2f).setId(BLOCKS.key("redstone-clock"))));
+
+    public static final RegistryObject<Block> REDSTONE_NOT_GATE = registerBlock("redstone-not-gate",
+            () -> new NotGate(BlockBehaviour.Properties.of().strength(2f).setId(BLOCKS.key("redstone-not-gate"))));
+
+    public static final RegistryObject<Block> REDSTONE_OR_GATE = registerBlock("redstone-or-gate",
+            () -> new OrGate(BlockBehaviour.Properties.of().strength(2f).setId(BLOCKS.key("redstone-or-gate"))));
+
+    public static final RegistryObject<Block> REDSTONE_AND_GATE = registerBlock("redstone-and-gate",
+            () -> new AndGate(BlockBehaviour.Properties.of().strength(2f).setId(BLOCKS.key("redstone-and-gate"))));
+
+//Keeping here just incase
+    /*
     public static final RegistryObject<Block> REDSTONE_CLOCK = registerBlock("redstone-clock",
             () -> new RedstoneClock(BlockBehaviour.Properties.of().strength(2f)));
     public static final  RegistryObject<Block> REDSTONE_NOT_GATE = registerBlock("redstone-not-gate",
@@ -37,15 +51,21 @@ public class ModBlocks {
     public static final RegistryObject<Block> REDSTONE_AND_GATE = registerBlock("redstone-and-gate",
             () -> new AndGate(BlockBehaviour.Properties.of().strength(2f)));
 
+ */
+
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
         registerBlockItem(name, toReturn);
         return toReturn;
     }
-
+/*
+public static final RegistryObject<Item> EXAMPLE_BLOCK_ITEM = ITEMS.register("example_block",
+        () -> new BlockItem(EXAMPLE_BLOCK.get(), new Item.Properties().setId(ITEMS.key("example_block")))
+    );
+ */
     private static <T extends Block> void registerBlockItem(String name, RegistryObject<T> block) {
 
-        ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+        ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().setId(ModItems.ITEMS.key(name))));
     }
 
     public static void register(BusGroup eventBus) {

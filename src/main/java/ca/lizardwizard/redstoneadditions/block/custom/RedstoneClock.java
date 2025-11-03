@@ -2,44 +2,43 @@ package ca.lizardwizard.redstoneadditions.block.custom;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 
 public class RedstoneClock extends Block {
-    public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
+    public static final BooleanProperty POWERED = BooleanProperty.create("powered");
     public static final IntegerProperty DELAY = IntegerProperty.create("delay", 1, 20);
-    public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
+    public static final EnumProperty<Direction> FACING = EnumProperty.create(
+            "facing", Direction.class, d -> d.getAxis().isHorizontal()
+    );
     public static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 2, 16);
 
-    public RedstoneClock(Properties p_49795_) {
-        super(p_49795_);
-        this.registerDefaultState(this.stateDefinition.any()
-                .setValue(POWERED, false)
-                .setValue(DELAY, 20).setValue(FACING, Direction.NORTH));
+    public RedstoneClock(BlockBehaviour.Properties props) {
+        super(props);
+        registerDefaultState(
+                stateDefinition.any()
+                        .setValue(POWERED, false)
+                        .setValue(FACING, Direction.NORTH)
+                        .setValue(DELAY, 1)
+        );
     }
 
     @Override
@@ -51,8 +50,9 @@ public class RedstoneClock extends Block {
 
 
     @Override
-    public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
+    public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+        // Set facing to the opposite of the player's horizontal direction
+        return this.defaultBlockState().setValue(FACING, ctx.getHorizontalDirection().getOpposite());
     }
 
     @Override
@@ -66,13 +66,9 @@ public class RedstoneClock extends Block {
 
     @Override
     public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
-        //Set the block to face away from the player
-        Direction facing = level.getBlockState(pos).getValue(FACING);
-        state.setValue(FACING, facing);
-        level.setBlock(pos, state, 3);
-        if (!level.isClientSide()) { // Server-side only
-            int delay = state.getValue(DELAY);
-            level.scheduleTick(pos, this, delay); // Schedule the first tick in 20 ticks (1 second)
+
+        if (!level.isClientSide()) {
+            level.scheduleTick(pos, this, state.getValue(DELAY));
         }
 
 

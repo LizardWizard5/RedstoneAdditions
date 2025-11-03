@@ -1,14 +1,13 @@
-
-
 pluginManagement {
     repositories {
-        maven { url = "https://maven.minecraftforge.net" }
         gradlePluginPortal()
-        mavenCentral()
+        maven {
+            name = 'MinecraftForge'
+            url = 'https://maven.minecraftforge.net/'
+        }
     }
 }
 
 plugins {
-    id "org.gradle.toolchains.foojay-resolver-convention" version "0.10.0"
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.10.0'
 }
-rootProject.name = "RedstoneAdditions"
