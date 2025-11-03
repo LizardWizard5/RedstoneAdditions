@@ -1,3 +1,5 @@
+# Currenty porting 1.21.10. Does not work atm.
+
 ## Purpose of the Mod
 Adds OR, XOR, NOT, and AND boolean logic gates and a CLOCK  with the idea of designing more compact redstone machines with potentially better performance.
 
