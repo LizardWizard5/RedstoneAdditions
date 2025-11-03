@@ -3,13 +3,13 @@
 	"credit": "Made with Blockbench",
 	"textures": {
 		"6": "block/repeater",
-		"8": "redstoneadditions:block/or-gate-copper-block-off",
-		"9": "redstoneadditions:block/or-gate-copper-block-2-off",
+		"8": "redstoneadditions:block/or-gate/or-gate-copper-block-off",
+		"9": "redstoneadditions:block/or-gate/or-gate-copper-block-2-off",
 		"10": "block/copper_block",
 		"11": "block/redstone_torch_off",
 		"12": "block/iron_block",
-		"13": "redstoneadditions:block/or-gate-off-xor",
-		"particle": "redstoneadditions:block/or-gate-off"
+		"13": "redstoneadditions:block/or-gate/or-gate-off-xor",
+		"particle": "redstoneadditions:block/or-gate/or-gate-off"
 	},
 	"elements": [
 		{

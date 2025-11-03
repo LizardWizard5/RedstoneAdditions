@@ -2,12 +2,12 @@
 	"format_version": "1.21.6",
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "redstoneadditions:block/not-gate-off",
+		"0": "redstoneadditions:block/not-gate/not-gate-off",
 		"1": "block/repeater",
 		"4": "block/iron_block",
 		"5": "block/copper_block",
 		"6": "block/redstone_torch",
-		"particle": "redstoneadditions:block/not-gate-off"
+		"particle": "redstoneadditions:block/not-gate/not-gate-off"
 	},
 	"elements": [
 		{

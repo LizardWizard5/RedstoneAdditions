@@ -6,9 +6,9 @@
 		"1": "block/redstone_torch_off",
 		"2": "block/iron_block",
 		"3": "block/repeater",
-		"4": "redstoneadditions:block/and-gate-copper-block",
-		"5": "redstoneadditions:block/or-gate-off",
-		"6": "redstoneadditions:block/or-gate-copper-block-2-off",
+		"4": "block/copper_block",
+		"5": "redstoneadditions:block/or-gate/or-gate-off",
+
 		"7": "block/copper_block",
 		"particle": "block/redstone_torch"
 	},
@@ -195,7 +195,7 @@
 			"faces": {
 				"north": {"uv": [0, 0, 6, 6], "texture": "#7"},
 				"east": {"uv": [0, 0, 6, 6], "texture": "#7"},
-				"south": {"uv": [0, 0, 6, 6], "texture": "#6"},
+				"south": {"uv": [0, 0, 6, 6], "texture": "#4"},
 				"west": {"uv": [0, 0, 6, 6], "texture": "#7"},
 				"up": {"uv": [0, 0, 6, 6], "texture": "#4"},
 				"down": {"uv": [0, 0, 6, 6], "texture": "#7"}

@@ -2,6 +2,8 @@ package ca.lizardwizard.redstoneadditions.block.custom;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -12,6 +14,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.redstone.Orientation;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -21,13 +24,14 @@ public class AndGate extends Block {
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 2, 16);
-
+    public static final BooleanProperty NAND = BooleanProperty.create("nand"); // If true, behaves as a NAND gate
 
     public AndGate(Properties p_49795_) {
         super(p_49795_);
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(POWERED, false)
-                .setValue(FACING, Direction.NORTH));
+                .setValue(FACING, Direction.NORTH)
+                .setValue(NAND, false));
     }
 
     // Boilerplate code
@@ -35,6 +39,7 @@ public class AndGate extends Block {
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(POWERED);
         builder.add(FACING);
+        builder.add(NAND);
     }
 
     //Facing same direction as player
@@ -79,6 +84,18 @@ public class AndGate extends Block {
         return 0;
     }
 
+    @Override
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit){
+        if(level.isClientSide()) {
+            return InteractionResult.SUCCESS;
+        }
+
+        //Toggle NAND property
+
+        level.setBlock(pos, state.setValue(NAND, !state.getValue(NAND)), 3);
+        level.updateNeighborsAt(pos.relative(state.getValue(FACING).getOpposite()), this);
+        return InteractionResult.SUCCESS;
+    }
 
     @Override
     protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, @Nullable Orientation p_369340_, boolean p_55046_) {
@@ -96,6 +113,9 @@ public class AndGate extends Block {
 
         //AND gate logic
         boolean shouldBePowered = (leftPower > 0 && rightPower > 0); // AND gate
+        if(state.getValue(NAND)) {
+            shouldBePowered = !shouldBePowered; // Invert for NAND behavior
+        }
         if (state.getValue(POWERED) != shouldBePowered) {
 
             level.setBlock(pos, state.setValue(POWERED, shouldBePowered), 3);

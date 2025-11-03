@@ -6,9 +6,9 @@
 		"1": "block/redstone_torch_off",
 		"2": "block/iron_block",
 		"4": "block/copper_block",
-		"8": "redstoneadditions:block/or-gate",
+		"8": "redstoneadditions:block/or-gate/or-gate",
 		"9": "block/repeater_on",
-		"10": "redstoneadditions:block/and-gate-copper-block-off",
+		"10": "redstoneadditions:block/and-gate/and-gate-copper-block-off",
 		"particle": "block/redstone_torch"
 	},
 	"elements": [

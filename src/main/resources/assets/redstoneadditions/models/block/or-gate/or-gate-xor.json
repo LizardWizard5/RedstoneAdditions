@@ -6,10 +6,10 @@
 		"2": "block/redstone_torch",
 		"3": "block/copper_block",
 		"4": "block/iron_block",
-		"5": "redstoneadditions:block/or-gate-copper-block",
-		"6": "redstoneadditions:block/or-gate-copper-block-2",
-		"8": "redstoneadditions:block/or-gate-xor",
-		"particle": "redstoneadditions:block/or-gate"
+		"5": "redstoneadditions:block/or-gate/or-gate-copper-block",
+		"6": "redstoneadditions:block/or-gate/or-gate-copper-block-2",
+		"8": "redstoneadditions:block/or-gate/or-gate-xor",
+		"particle": "redstoneadditions:block/or-gate/or-gate"
 	},
 	"elements": [
 		{
