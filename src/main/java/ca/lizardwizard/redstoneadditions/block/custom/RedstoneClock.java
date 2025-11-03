@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
@@ -24,11 +25,10 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 
 public class RedstoneClock extends Block {
-    public static final BooleanProperty POWERED = BooleanProperty.create("powered");
+    public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
+    public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final IntegerProperty DELAY = IntegerProperty.create("delay", 1, 20);
-    public static final EnumProperty<Direction> FACING = EnumProperty.create(
-            "facing", Direction.class, d -> d.getAxis().isHorizontal()
-    );
+
     public static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 2, 16);
 
     public RedstoneClock(BlockBehaviour.Properties props) {
@@ -37,7 +37,7 @@ public class RedstoneClock extends Block {
                 stateDefinition.any()
                         .setValue(POWERED, false)
                         .setValue(FACING, Direction.NORTH)
-                        .setValue(DELAY, 1)
+                        .setValue(DELAY, 20)
         );
     }
 
@@ -52,7 +52,7 @@ public class RedstoneClock extends Block {
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext ctx) {
         // Set facing to the opposite of the player's horizontal direction
-        return this.defaultBlockState().setValue(FACING, ctx.getHorizontalDirection().getOpposite());
+        return this.defaultBlockState().setValue(FACING, ctx.getHorizontalDirection());
     }
 
     @Override
