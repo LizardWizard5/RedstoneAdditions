@@ -2,6 +2,8 @@ package ca.lizardwizard.redstoneadditions.block.custom;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -23,6 +25,9 @@ public class AndGate extends Block {
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
     public static final BooleanProperty NAND = BooleanProperty.create("nand");
     public static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 2, 16);
+    public static final BooleanProperty BURNED = BooleanProperty.create("burned");//Handles if gate is flipping too fast
+    int flips = 0;
+    int ticks=0;
 
 
     public AndGate(Properties p_49795_) {
@@ -30,7 +35,8 @@ public class AndGate extends Block {
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(POWERED, false)
                 .setValue(FACING, Direction.NORTH)
-                .setValue(NAND, false));
+                .setValue(NAND, false)
+                .setValue(BURNED, false));
     }
 
     // Boilerplate code
@@ -39,6 +45,7 @@ public class AndGate extends Block {
         builder.add(POWERED);
         builder.add(FACING);
         builder.add(NAND);
+        builder.add(BURNED);
     }
 
     //Facing same direction as player
@@ -98,7 +105,7 @@ public class AndGate extends Block {
 
     @Override
     public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
-        if (level.isClientSide) return; // server-side only
+        if (level.isClientSide || state.getValue(BURNED)) return; // server-side only
         //Out
         Direction facing = state.getValue(FACING);
 
@@ -116,9 +123,19 @@ public class AndGate extends Block {
         if(state.getValue(NAND)) {
             shouldBePowered = !shouldBePowered;
         }
-        if (state.getValue(POWERED) != shouldBePowered) {
+        if (state.getValue(POWERED) != shouldBePowered ) {
+            flips++;
+            System.out.println("ANDGATE Flips: " + flips);
+            if(flips >= 80) {//For some reason AndGate requires a higher limit to accomodate clock at delay of 1
+                System.out.println("ANDGATE BURNOUT");
+                // Burn out the gate
+                level.setBlock(pos, state.setValue(BURNED, true).setValue(POWERED,false), 3);
+                level.scheduleTick(pos, this, 100);//time out for 5 seconds
 
-            level.setBlock(pos, state.setValue(POWERED, shouldBePowered), 3);
+                flips = 0;
+            }
+            else
+                level.setBlock(pos, state.setValue(POWERED, shouldBePowered), 3);
             // Tell neighbors our output changed
             level.updateNeighborsAt(pos, this);
             level.updateNeighborsAt(pos.relative(facing), this);
@@ -127,5 +144,18 @@ public class AndGate extends Block {
 
         return;
     }
+    @Override
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        ticks++;
+        if(state.getValue(BURNED)){//Recover from burnout
+            level.setBlock(pos, state.setValue(BURNED, false).setValue(POWERED,true), 3);
 
+        }
+        if(ticks >=2){
+            flips = 0;
+            ticks=0;
+        }
+
+        level.scheduleTick(pos, this, 20);//Continue normal ticking
+    }
 }

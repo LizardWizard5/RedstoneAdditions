@@ -34,7 +34,9 @@ public class NotGate extends Block {
         super(p_49795_);
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(POWERED, false)
-                .setValue(DELAY, 1).setValue(FACING, Direction.NORTH).setValue(BURNED, false));
+                .setValue(DELAY, 1)
+                .setValue(FACING, Direction.NORTH)
+                .setValue(BURNED, false));
     }
 
     @Override
