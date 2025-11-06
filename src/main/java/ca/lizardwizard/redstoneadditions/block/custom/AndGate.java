@@ -117,6 +117,35 @@ public class AndGate extends Block {
         return hasSupport && !touchingWater;
     }
 
+    @Override
+    public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean moving) {
+
+        super.onPlace(state, level, pos, oldState, moving);
+        if (level.isClientSide())// Server-side only
+            return;
+
+        if (!state.canSurvive(level, pos)) {
+            level.destroyBlock(pos, true);
+            return;
+        }
+
+        //Out
+        Direction facing = state.getValue(FACING);
+
+        //In
+        Direction leftSide = facing.getCounterClockWise();
+        Direction rightSide = facing.getClockWise();
+
+        // Read power from the left and right neighbors
+        int leftPower = level.getSignal(pos.relative(leftSide), leftSide);
+        int rightPower = level.getSignal(pos.relative(rightSide), rightSide);
+
+        //AND gate logic
+        boolean shouldBePowered = (leftPower > 0 && rightPower > 0); // AND gate
+
+        level.setBlock(pos, state.setValue(POWERED, shouldBePowered), 3);
+    }
+
 
     @Override
     protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, @Nullable Orientation p_369340_, boolean p_55046_) {
