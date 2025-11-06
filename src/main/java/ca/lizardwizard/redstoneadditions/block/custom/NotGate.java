@@ -91,28 +91,7 @@ public class NotGate extends Block {
 
         return hasSupport && !touchingWater;
     }
-    @Override
-    public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean moving) {
 
-        super.onPlace(state, level, pos, oldState, moving);
-        if (level.isClientSide())// Server-side only
-            return;
-
-        if (!state.canSurvive(level, pos)) {
-            level.destroyBlock(pos, true);
-            return;
-        }
-        Direction facing = state.getValue(FACING);
-        Direction inputSide = facing; // convention: input is the back
-
-        // Read power *from the back neighbor* toward us
-        int inputPower = level.getSignal(pos.relative(inputSide), inputSide);
-
-        boolean shouldBePowered = (inputPower == 0); // NOT gate
-
-        level.setBlock(pos, state.setValue(POWERED, shouldBePowered), 3);
-
-    }
     @Override
     protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, @Nullable Orientation p_369340_, boolean p_55046_) {
         if (level.isClientSide() || state.getValue(BURNED)) return; // server-side only
