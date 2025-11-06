@@ -116,7 +116,34 @@ public class AndGate extends Block {
 
         return hasSupport && !touchingWater;
     }
+    @Override
+    public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean moving) {
 
+        super.onPlace(state, level, pos, oldState, moving);
+        if (level.isClientSide)// Server-side only
+            return;
+
+        if (!state.canSurvive(level, pos)) {
+            level.destroyBlock(pos, true);
+            return;
+        }
+
+        //Out
+        Direction facing = state.getValue(FACING);
+
+        //In
+        Direction leftSide = facing.getCounterClockWise();
+        Direction rightSide = facing.getClockWise();
+
+        // Read power from the left and right neighbors
+        int leftPower = level.getSignal(pos.relative(leftSide), leftSide);
+        int rightPower = level.getSignal(pos.relative(rightSide), rightSide);
+
+        //AND gate logic
+        boolean shouldBePowered = (leftPower > 0 && rightPower > 0); // AND gate
+
+        level.setBlock(pos, state.setValue(POWERED, shouldBePowered), 3);
+    }
 
     @Override
     public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
@@ -146,9 +173,9 @@ public class AndGate extends Block {
         }
         if (state.getValue(POWERED) != shouldBePowered ) {
             flips++;
-            System.out.println("ANDGATE Flips: " + flips);
+
             if(flips >= 80) {//For some reason AndGate requires a higher limit to accomodate clock at delay of 1
-                System.out.println("ANDGATE BURNOUT");
+
                 // Burn out the gate
                 level.setBlock(pos, state.setValue(BURNED, true).setValue(POWERED,false), 3);
                 level.scheduleTick(pos, this, 100);//time out for 5 seconds

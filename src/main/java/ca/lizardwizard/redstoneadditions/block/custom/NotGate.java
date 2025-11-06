@@ -25,7 +25,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class NotGate extends Block {
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
-    public static final IntegerProperty DELAY = IntegerProperty.create("delay", 1, 4);
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 2, 16);
     public static final BooleanProperty BURNED = BooleanProperty.create("burned");//Handles if gate is flipping too fast
@@ -36,7 +35,6 @@ public class NotGate extends Block {
         super(p_49795_);
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(POWERED, false)
-                .setValue(DELAY, 1)
                 .setValue(FACING, Direction.NORTH)
                 .setValue(BURNED, false));
     }
@@ -59,7 +57,6 @@ public class NotGate extends Block {
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(POWERED);
-        builder.add(DELAY);
         builder.add(FACING);
         builder.add(BURNED);
     }
@@ -79,16 +76,7 @@ public class NotGate extends Block {
         return 0;
     }
 
-    @Override
-    public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
 
-        if (!level.isClientSide) { // Server-side only
-            int delay = state.getValue(DELAY);
-            level.scheduleTick(pos, this, 20); // Schedule the first tick in 20 ticks (1 second)
-        }
-
-
-    }
 
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
@@ -102,7 +90,28 @@ public class NotGate extends Block {
         return hasSupport && !touchingWater;
     }
 
+    @Override
+    public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean moving) {
 
+        super.onPlace(state, level, pos, oldState, moving);
+        if (level.isClientSide)// Server-side only
+            return;
+
+        if (!state.canSurvive(level, pos)) {
+            level.destroyBlock(pos, true);
+            return;
+        }
+        Direction facing = state.getValue(FACING);
+        Direction inputSide = facing; // convention: input is the back
+
+        // Read power *from the back neighbor* toward us
+        int inputPower = level.getSignal(pos.relative(inputSide), inputSide);
+
+        boolean shouldBePowered = (inputPower == 0); // NOT gate
+
+        level.setBlock(pos, state.setValue(POWERED, shouldBePowered), 3);
+
+    }
     @Override
     public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
         if (level.isClientSide || state.getValue(BURNED)) return; // server-side only

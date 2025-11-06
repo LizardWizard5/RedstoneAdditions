@@ -14,6 +14,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -21,6 +22,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -130,8 +132,30 @@ public class RedstoneClock extends Block {
     }
 
 
+    @Override
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        //Check for solid block below
+        BlockPos below = pos.below();
+        boolean hasSupport = level.getBlockState(below).isFaceSturdy(level, below, Direction.UP);
+
+        // Check for water at current position or below
+        boolean touchingWater = level.getFluidState(pos).isSourceOfType(Fluids.WATER);
+
+        return hasSupport && !touchingWater;
+    }
 
 
+
+    @Override
+    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
+        if (level.isClientSide) return; // server-side only
+
+        //Check for if nearby changes cause block destroy
+        if (!canSurvive(state, level, pos)) {
+            level.destroyBlock(pos, true); // Break the block and drop items
+            return;
+        }
+    }
 
     @Override
     public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {

@@ -2,6 +2,7 @@ modLoader = "javafml"
 loaderVersion = "[47,48)"         # Forge/JavaFML 47.x only
 
 license = "${mod_license}"
+logoFile="RA_LOGO.png"
 
 [[mods]]
 modId = "${mod_id}"
@@ -9,6 +10,7 @@ version = "${mod_version}"
 displayName = "${mod_name}"
 authors = "${mod_authors}"
 description = '''${mod_description}'''
+
 
 # ---- Dependencies ----
 
