@@ -27,16 +27,16 @@ public class ModBlocks {
 
 
     public static final RegistryObject<Block> REDSTONE_CLOCK = registerBlock("redstone-clock",
-            () -> new RedstoneClock(BlockBehaviour.Properties.of().strength(2f).setId(BLOCKS.key("redstone-clock"))));
+            () -> new RedstoneClock(BlockBehaviour.Properties.of().strength(0f).setId(BLOCKS.key("redstone-clock"))));
 
     public static final RegistryObject<Block> REDSTONE_NOT_GATE = registerBlock("redstone-not-gate",
-            () -> new NotGate(BlockBehaviour.Properties.of().strength(2f).setId(BLOCKS.key("redstone-not-gate"))));
+            () -> new NotGate(BlockBehaviour.Properties.of().strength(0f).setId(BLOCKS.key("redstone-not-gate"))));
 
     public static final RegistryObject<Block> REDSTONE_OR_GATE = registerBlock("redstone-or-gate",
-            () -> new OrGate(BlockBehaviour.Properties.of().strength(2f).setId(BLOCKS.key("redstone-or-gate"))));
+            () -> new OrGate(BlockBehaviour.Properties.of().strength(0f).setId(BLOCKS.key("redstone-or-gate"))));
 
     public static final RegistryObject<Block> REDSTONE_AND_GATE = registerBlock("redstone-and-gate",
-            () -> new AndGate(BlockBehaviour.Properties.of().strength(2f).setId(BLOCKS.key("redstone-and-gate"))));
+            () -> new AndGate(BlockBehaviour.Properties.of().strength(0f).setId(BLOCKS.key("redstone-and-gate"))));
 
 //Keeping here just incase
     /*

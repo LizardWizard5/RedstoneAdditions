@@ -19,9 +19,12 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+
+import javax.annotation.Nullable;
 
 
 public class RedstoneClock extends Block {
@@ -127,6 +130,15 @@ public class RedstoneClock extends Block {
     }
 
 
+    @Override
+    protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, @Nullable Orientation p_369340_, boolean p_55046_) {
+        if (level.isClientSide()) return; // server-side only
+
+        //Check for if nearby changes cause block destroy
+        if (!canSurvive(state, level, pos)) {
+            level.destroyBlock(pos, true); // Break the block and drop items
+        }
+    }
 
 
 

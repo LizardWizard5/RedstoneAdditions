@@ -7,6 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -25,13 +26,18 @@ public class OrGate  extends Block {
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 2, 16);
+    public static final BooleanProperty BURNED = BooleanProperty.create("burned");//Handles if gate is flipping too fast
+    int flips = 0;
+    int ticks=0;
 
     public static final BooleanProperty  XOR = BooleanProperty.create("xor");
     public OrGate(Properties p_49795_) {
         super(p_49795_);
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(POWERED, false)
-                .setValue(FACING, Direction.NORTH).setValue(XOR, false));
+                .setValue(FACING, Direction.NORTH)
+                .setValue(XOR, false)
+                .setValue(BURNED, false));
     }
 
     // Boilerplate code
@@ -40,6 +46,7 @@ public class OrGate  extends Block {
         builder.add(POWERED);
         builder.add(FACING);
         builder.add(XOR);
+        builder.add(BURNED);
     }
 
     //Facing same direction as player
@@ -104,14 +111,26 @@ public class OrGate  extends Block {
         return getSignal(state, level, pos, side);        // strong power
     }
 
+    @Override
+    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        //Check for solid block below
+        BlockPos below = pos.below();
+        boolean hasSupport = level.getBlockState(below).isFaceSturdy(level, below, Direction.UP);
+
+        // Check for water at current position or below
+        boolean touchingWater = level.getFluidState(pos).isSourceOfType(Fluids.WATER);
+
+        return hasSupport && !touchingWater;
+    }
 
     @Override
     protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, @Nullable Orientation p_369340_, boolean p_55046_) {
-        if (level.isClientSide()) return; // server-side only
+        if (level.isClientSide() || state.getValue(BURNED)) return; // server-side only
 
-        //Check for water
-        if (level.getFluidState(pos).isSourceOfType(Fluids.WATER)) {
+        //Check for if nearby changes cause block destroy
+        if (!canSurvive(state, level, pos)) {
             level.destroyBlock(pos, true); // Break the block and drop items
+            return;
         }
 
         //Out
@@ -132,7 +151,18 @@ public class OrGate  extends Block {
         }
         if (state.getValue(POWERED) != shouldBePowered) {
 
-            level.setBlock(pos, state.setValue(POWERED, shouldBePowered), 3);
+            flips++;
+            if(flips >= 80) {//For some reason OrGate requires a higher limit to accomodate clock at delay of 1
+                // Burn out the gate
+                level.setBlock(pos, state.setValue(BURNED, true).setValue(POWERED,false), 3);
+                level.scheduleTick(pos, this, 100);
+
+                flips = 0;
+            }
+            else {
+                level.setBlock(pos, state.setValue(POWERED, shouldBePowered), 3);
+            }
+
             // Tell neighbors our output changed
             level.updateNeighborsAt(pos, this);
             level.updateNeighborsAt(pos.relative(facing), this);
