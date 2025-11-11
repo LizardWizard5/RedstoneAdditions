@@ -104,14 +104,14 @@ Forge install with just Redstone Additions and WorldEdit
 ### Redstone Additions Clock
 For the Redstone Additions test, 10,201 (100x100 grid) clocks were set with WorldEdit with a delay set to 1 (flips 20 times a tick)
 
-<img src="https://raw.githubusercontent.com/LizardWizard5/RedstoneAdditions/refs/heads/master/performanceComparisons/RedstonePerfClock.png" alt="Performance picture for Redstone Additions with Integrated Server metrics showing 23ms ticks, 3tx, 1111rx and 888MB of Memory usage "/>
+<img src="https://raw.githubusercontent.com/LizardWizard5/RedstoneAdditions/refs/heads/1.20.1/performanceComparisons/RedstonePerfClock.png" alt="Performance picture for Redstone Additions with Integrated Server metrics showing 23ms ticks, 3tx, 1111rx and 888MB of Memory usage "/>
 
 ### Vanilla Clock
 For the vanilla clock, this is a design I have came across from just playing the game, I am unsure the exact speed it flips but just watching the flip rate, it feels similar to the speed of Redstone Additions Clock with a delay =1 world edit was also used to copy and stack in a 100x100 grid
 effectively placing 10,000 individual instances of this design.
 
 
-<img src="https://raw.githubusercontent.com/LizardWizard5/RedstoneAdditions/refs/heads/master/performanceComparisons/vanillaPerfClock.png" alt="Performance picture for Vanilla  with Integrated Server metrics showing 1962ms ticks, 4tx, 119rx and 1432MB of Memory usage "/>
+<img src="https://raw.githubusercontent.com/LizardWizard5/RedstoneAdditions/refs/heads/1.20.1/performanceComparisons/vanillaPerfClock.png" alt="Performance picture for Vanilla  with Integrated Server metrics showing 1962ms ticks, 4tx, 119rx and 1432MB of Memory usage "/>
 
 ### The conclusions
 Through my own research on what each value means in the f3 menu through the following <a src="https://minecraft.fandom.com/wiki/Debug_screen">Minecraft Wiki Link</a>, it would seem that using the mod lowers the total amount of memory while also lowering speed it takes to process a tick. The mod also has an increased amount packets received from the Integrated Server by roughly 10x. 
